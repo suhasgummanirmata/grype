@@ -20,11 +20,11 @@ type matcherConfig struct {
 }
 
 func (cfg matchConfig) loadDefaultValues(v *viper.Viper) {
-	v.SetDefault("match.java.using-cpes", true)
-	v.SetDefault("match.dotnet.using-cpes", true)
-	v.SetDefault("match.golang.using-cpes", true)
-	v.SetDefault("match.javascript.using-cpes", true)
-	v.SetDefault("match.python.using-cpes", true)
-	v.SetDefault("match.ruby.using-cpes", true)
+	v.SetDefault("match.java.using-cpes", false)
+	v.SetDefault("match.dotnet.using-cpes", false)
+	v.SetDefault("match.golang.using-cpes", false)
+	v.SetDefault("match.javascript.using-cpes", false)
+	v.SetDefault("match.python.using-cpes", false)
+	v.SetDefault("match.ruby.using-cpes", false)
 	v.SetDefault("match.stock.using-cpes", true)
 }
