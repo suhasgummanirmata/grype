@@ -29,6 +29,7 @@ capture: sboms vulns ## Collect and store all syft and grype results
 
 .PHONY: capture
 vulns: venv ## Collect and store all grype results
+	export GRYPE_BY_CVE=true 
 	$(YARDSTICK) -v result capture -r $(RESULT_SET)
 
 .PHONY: sboms
