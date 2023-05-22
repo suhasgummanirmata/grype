@@ -26,6 +26,7 @@ func Provide(userInput string, config ProviderConfig) ([]Package, Context, *sbom
 	memoryConsumption()
 
 	packages, ctx, s, err := syftSBOMProvider(userInput, config)
+	log.Log.Info(userInput)
 	log.Log.Info("Line 29")
 	memoryConsumption()
 
@@ -48,7 +49,7 @@ func Provide(userInput string, config ProviderConfig) ([]Package, Context, *sbom
 		return packages, ctx, s, err
 	}
 
-	p, c, s, e :=  syftProvider(userInput, config)
+	p, c, s, e := syftProvider(userInput, config)
 
 	log.Log.Info("Line 53")
 	memoryConsumption()
