@@ -67,7 +67,7 @@ result-sets:
 
         - name: syft
           # note: we want to use a fixed version of syft for capturing all results (NOT "latest")
-          version: v0.74.1
+          version: extract-go-binary-versions-from-known-build-flags
           produces: SBOM
           refresh: false
 
