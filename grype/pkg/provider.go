@@ -3,21 +3,37 @@ package pkg
 import (
 	"errors"
 	"fmt"
+	"runtime"
 
 	"github.com/bmatcuk/doublestar/v2"
 
 	"github.com/anchore/syft/syft/sbom"
 	"github.com/anchore/syft/syft/source"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 )
+
+func memoryConsumption() {
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	log.Log.Info(fmt.Sprintf("Allocated memory: %v bytes\n", m.Alloc))
+}
 
 var errDoesNotProvide = fmt.Errorf("cannot provide packages from the given source")
 
 // Provide a set of packages and context metadata describing where they were sourced from.
 func Provide(userInput string, config ProviderConfig) ([]Package, Context, *sbom.SBOM, error) {
+	log.Log.Info("Line 25")
+	memoryConsumption()
+
 	packages, ctx, s, err := syftSBOMProvider(userInput, config)
+	log.Log.Info("Line 29")
+	memoryConsumption()
+
 	if !errors.Is(err, errDoesNotProvide) {
 		if len(config.Exclusions) > 0 {
 			packages, err = filterPackageExclusions(packages, config.Exclusions)
+			log.Log.Info("Line 35")
+			memoryConsumption()
 			if err != nil {
 				return nil, ctx, s, err
 			}
@@ -26,11 +42,18 @@ func Provide(userInput string, config ProviderConfig) ([]Package, Context, *sbom
 	}
 
 	packages, ctx, err = purlProvider(userInput)
+	log.Log.Info("Line 45")
+	memoryConsumption()
 	if !errors.Is(err, errDoesNotProvide) {
 		return packages, ctx, s, err
 	}
 
-	return syftProvider(userInput, config)
+	p, c, s, e :=  syftProvider(userInput, config)
+
+	log.Log.Info("Line 53")
+	memoryConsumption()
+
+	return p, c, s, e
 }
 
 // This will filter the provided packages list based on a set of exclusion expressions. Globs
