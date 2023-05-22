@@ -57,6 +57,12 @@ func getSBOM(userInput string) (*sbom.SBOM, error) {
 		return nil, err
 	}
 
+	defer func() {
+		if closer, ok := reader.(io.Closer); ok {
+			closer.Close()
+		}
+	}()
+
 	s, format, err := syft.Decode(reader)
 	if err != nil {
 		return nil, fmt.Errorf("unable to decode sbom: %w", err)

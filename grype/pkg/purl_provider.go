@@ -44,6 +44,13 @@ func getPurlPackages(userInput string) ([]Package, error) {
 
 func decodePurlFile(reader io.Reader) ([]Package, error) {
 	scanner := bufio.NewScanner(reader)
+
+	defer func() {
+		if closer, ok := reader.(io.Closer); ok {
+			closer.Close()
+		}
+	}()
+
 	packages := []Package{}
 
 	for scanner.Scan() {
